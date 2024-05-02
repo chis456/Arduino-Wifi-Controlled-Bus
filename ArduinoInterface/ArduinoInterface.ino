@@ -52,7 +52,6 @@ void setup() {
   //master slave connection with NodeMCU ESP8266
   Wire.begin(8);             
   Wire.onReceive(receiveEvent); 
-  Wire.onRequest(requestEvent);
   Serial.begin(9600);          
 }
 
@@ -77,15 +76,33 @@ void receiveEvent(int howMany) {
   }
   else if(command == 'l')
   {
-    brake = false;
-    left = true;
-    right = false;
+    if(left)
+    {
+      brake = false;
+      left = false;
+      right = false;
+    }
+    else
+    {
+      brake = false;
+      left = true;
+      right = false;
+    }  
   }
   else if(command == 'r')
   {
-    brake = false;
-    left = false;
-    right = true;
+    if(right)
+    {
+      brake = false;
+      left = false;
+      right = false;
+    }
+    else
+    {
+      brake = false;
+      left = false;
+      right = true;
+    }
   }
   else if(command == 'b')
   {
@@ -215,5 +232,9 @@ void receiveEvent(int howMany) {
     digitalWrite(Bin3, LOW);
 	  digitalWrite(Bin4, LOW);
   }
-  Serial.println();
+  Serial.println(forward);
+  Serial.println(backward);
+  Serial.println(left);
+  Serial.println(right);
+
 }
